@@ -1,0 +1,9 @@
+body {
+    background-color: darkslategray;
+} 
+.list-group-item {
+    background-color: bisque;
+}
+ul {
+    width: 400px;
+}
