@@ -3,8 +3,14 @@ $(()=>{
     let addtask = $('#addtask')
     let todolist = $('#todolist')
     let removetask = $('#removetask')
+    let duedate = $('#duedate')
+    duedate.val('')
     addtask.fadeIn('fast')
     addtask.click(() => {
+        let dd = duedate.val()
+        duedate.val('')
+        if(dd == '')
+            dd == new Date()
         let task = newtask.val()
         task.trim()
         if(task == '')
@@ -17,16 +23,17 @@ $(()=>{
             .addClass('m-1')
             .text(task)
             .click(function () {
-                $(this).parent().toggleClass('done')
+                $(this).parent().toggleClass('done').toggleClass('list-group-item-success')
+
                 if($(this).css('text-decoration') == 'line-through')
-                $(this).css('text-decoration','')
+                    $(this).css('text-decoration','')
                 else
                     $(this).css('text-decoration','line-through')
             })
         )
         .append(
             $('<button>')
-            .addClass('btn btn-outline-danger m-1')
+            .addClass('btn btn-danger m-1')
             .append(
                 $('<i>')
                 .addClass('fa fa-times')
@@ -39,7 +46,7 @@ $(()=>{
         )
         .append(
             $('<button>')
-            .addClass('btn btn-outline-primary m-1')
+            .addClass('btn btn-info m-1')
             .append(
                 $('<i>')
                 .addClass('fa fa-arrow-up')
@@ -50,7 +57,7 @@ $(()=>{
         )
         .append(
             $('<button>')
-            .addClass('btn btn-outline-primary m-1')
+            .addClass('btn btn-info m-1')
             .append(
                 $('<i>')
                 .addClass('fa fa-arrow-down')
@@ -59,9 +66,21 @@ $(()=>{
                 $(e.currentTarget).parent().next()
             ))
         )
+        // .append(
+        //     $('<button>')
+        //     .addClass('btn btn-primary m-1')
+        //     .append(
+        //         $('<i>')
+        //         .addClass('fa fa-edit')
+        //     )
+        // )
         .hide(10,function () {
             $(this).show('slow')
         })
+        .attr('data-toggle','tooltip')
+        .attr('data-placement','left')
+        .attr('data-original-title',dd)
+        .tooltip()
         todolist.append(item)
     })
     newtask.keypress(function (e) {
