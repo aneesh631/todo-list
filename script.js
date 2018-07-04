@@ -87,6 +87,10 @@ $(()=>{
         if(e.which == 13)
             addtask.click()
     })
+    duedate.keypress(function (e) {
+        if(e.which == 13)
+            addtask.click()
+    })
     removetask.click(function () {
         $('.done').each(function () {
             $(this).children()[1].click()
