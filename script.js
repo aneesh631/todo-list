@@ -120,16 +120,15 @@ $(()=>{
             items.push($(this))
         })
         items.sort(function (a,b) {
-            // console.log(a.attr('data-original-title'),b.attr('data-original-title'))
-            return a.attr('data-original-title')>b.attr('data-original-title')
+            return $(a.children()[0]).attr('data-original-title')>$(b.children()[0]).attr('data-original-title')
         })
         todolist.hide('fast',function () {
-            listItems.remove()
+            for(let i=0;i<items.length;i++){
+                console.log($(items[i]).children()[0],i)
+                todolist.append($(items[i]))
+            }
         })
-        for(let i=0;i<items.length;i++){
-            // console.log(items[i])
-            todolist.append(items[i])
-        }
+        // console.log(todolist)
         todolist.show('fast')
     })
     removetask.click(function () {
