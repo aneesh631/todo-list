@@ -4,8 +4,12 @@ $(()=>{
     let todolist = $('#todolist')
     let removetask = $('#removetask')
     let duedate = $('#duedate')
+    let sorttask = $('#sorttask')
+    let input = $('#input')
     duedate.val('')
-    addtask.fadeIn('fast')
+    input.fadeOut(10, function () {
+        $(this).fadeIn('slow')
+    })
     addtask.click(() => {
         let dd = duedate.val()
         duedate.val('')
@@ -90,6 +94,25 @@ $(()=>{
     duedate.keypress(function (e) {
         if(e.which == 13)
             addtask.click()
+    })
+    sorttask.click(function () {
+        let items = []
+        let listItems = $('#todolist > li')
+        listItems.each(function () {
+            items.push($(this))
+        })
+        items.sort(function (a,b) {
+            // console.log(a.attr('data-original-title'),b.attr('data-original-title'))
+            return a.attr('data-original-title')>b.attr('data-original-title')
+        })
+        todolist.hide('fast',function () {
+            listItems.remove()
+        })
+        for(let i=0;i<items.length;i++){
+            // console.log(items[i])
+            todolist.append(items[i])
+        }
+        todolist.show('fast')
     })
     removetask.click(function () {
         $('.done').each(function () {
