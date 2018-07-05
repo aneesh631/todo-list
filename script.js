@@ -36,11 +36,10 @@ $(()=>{
             .text(task)
             .click(function () {
                 $(this).parent().toggleClass('done').toggleClass('list-group-item-success')
-
-                if($(this).css('text-decoration') == 'line-through')
-                    $(this).css('text-decoration','')
+                if($(this).css('text-decoration-line') == 'line-through')
+                    $(this).css('text-decoration-line','')
                 else
-                    $(this).css('text-decoration','line-through')
+                    $(this).css('text-decoration-line','line-through')
             })
         )
         .append(
