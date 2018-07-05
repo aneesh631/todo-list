@@ -28,6 +28,10 @@ $(()=>{
         .addClass('list-group-item')
         .append(
             $('<span>')
+            .attr('data-toggle','tooltip')
+            .attr('data-placement','left')
+            .attr('data-original-title',dd)
+            .tooltip()
             .addClass('m-1')
             .text(task)
             .click(function () {
@@ -94,10 +98,6 @@ $(()=>{
         .hide(10,function () {
             $(this).show('slow')
         })
-        .attr('data-toggle','tooltip')
-        .attr('data-placement','left')
-        .attr('data-original-title',dd)
-        .tooltip()
         todolist.append(item)
     })
     $('#savebtn').click(function () {
