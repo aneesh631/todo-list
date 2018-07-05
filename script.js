@@ -92,7 +92,7 @@ $(()=>{
             .click(function () {
                 current = $(this).parent()
                 newname.val($($(this).parent().children()[0]).text())
-                newduedate.val($(this).parent().attr('data-original-title'))
+                newduedate.val($($(this).parent().children()[0]).attr('data-original-title'))
             })
         )
         .hide(10,function () {
@@ -103,8 +103,7 @@ $(()=>{
     $('#savebtn').click(function () {
         if(newname.val() == '' ||  newduedate.val() =='')
             return
-        $(current.children()[0]).text(newname.val())
-        current.attr('data-original-title',newduedate.val())
+        $(current.children()[0]).text(newname.val()).attr('data-original-title',newduedate.val())
         editmodal.modal('toggle')
     })
     newtask.keypress(function (e) {
