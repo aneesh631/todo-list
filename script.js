@@ -6,6 +6,10 @@ $(()=>{
     let duedate = $('#duedate')
     let sorttask = $('#sorttask')
     let input = $('#input')
+    let editmodal = $('#editmodal')
+    let newname = $('#newname')
+    let newduedate = $('#newduedate')
+    let current;
     duedate.val('')
     input.fadeOut(10, function () {
         $(this).fadeIn('slow')
@@ -70,14 +74,23 @@ $(()=>{
                 $(e.currentTarget).parent().next()
             ))
         )
-        // .append(
-        //     $('<button>')
-        //     .addClass('btn btn-primary m-1')
-        //     .append(
-        //         $('<i>')
-        //         .addClass('fa fa-edit')
-        //     )
-        // )
+        .append(
+            $('<button>')
+            .addClass('btn btn-primary m-1')
+            .append(
+                $('<i>')
+                .addClass('fa fa-edit')
+            )
+            .attr({
+                'data-toggle': 'modal',
+                'data-target': '#editmodal'
+            })
+            .click(function () {
+                current = $(this).parent()
+                newname.val($($(this).parent().children()[0]).text())
+                newduedate.val($(this).parent().attr('data-original-title'))
+            })
+        )
         .hide(10,function () {
             $(this).show('slow')
         })
@@ -86,6 +99,13 @@ $(()=>{
         .attr('data-original-title',dd)
         .tooltip()
         todolist.append(item)
+    })
+    $('#savebtn').click(function () {
+        if(newname.val() == '' ||  newduedate.val() =='')
+            return
+        $(current.children()[0]).text(newname.val())
+        current.attr('data-original-title',newduedate.val())
+        editmodal.modal('toggle')
     })
     newtask.keypress(function (e) {
         if(e.which == 13)
