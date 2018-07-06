@@ -9,6 +9,7 @@ $(()=>{
     let editmodal = $('#editmodal')
     let newname = $('#newname')
     let newduedate = $('#newduedate')
+    let savebtn = $('#savebtn')
     let current;
     duedate.val('')
     input.fadeOut(10, function () {
@@ -133,12 +134,20 @@ $(()=>{
         newtask.val('')
         addItem(task,dd,false)
     })
-    $('#savebtn').click(function () {
+    savebtn.click(function () {
         if(newname.val() == '' ||  newduedate.val() =='')
             return
         $(current.children()[0]).text(newname.val()).attr('data-original-title',newduedate.val())
         editmodal.modal('toggle')
         upadateLocalStorage()
+    })
+    newname.keypress(function (e) {
+        if(e.which == 13)
+            savebtn.click()
+    })
+    newduedate.keypress(function (e) {
+        if(e.which == 13)
+            savebtn.click()
     })
     newtask.keypress(function (e) {
         if(e.which == 13)

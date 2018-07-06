@@ -8,5 +8,6 @@ A simple todo list created using jQuery and Bootstrap.
 * To remove the striken items, click on remove.
 * Hover over a task to see its due date.
 * Click on sort, to arrange the tasks according to their due date.
+* Tasks persist even on refresh and reopening. 
 
 [Try out the live version](https://aneesh631.github.io/todo-list/)
