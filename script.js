@@ -14,32 +14,40 @@ $(()=>{
     input.fadeOut(10, function () {
         $(this).fadeIn('slow')
     })
-    addtask.click(() => {
-        let dd = duedate.val()
-        duedate.val('')
-        if(dd == '')
-            dd == new Date()
-        let task = newtask.val()
-        task.trim()
-        if(task == '')
-            return
-        newtask.val('')
+    upadateLocalStorage = function () {
+        let items = []
+        todolist.children().each(function () {
+            let span = $(this).children()[0]
+            let item = {
+                name: $(span).text(),
+                date: $(span).attr('data-original-title'),
+                done: ($(span).css('text-decoration-line') == 'line-through')?true:false,
+            }
+            items.push(item)
+        })
+        window.localStorage.setItem('todos',JSON.stringify(items))
+    }
+    addItem = function(name,date,done) {
         let item = $('<li>')
         .addClass('list-group-item')
         .append(
             $('<span>')
             .attr('data-toggle','tooltip')
             .attr('data-placement','left')
-            .attr('data-original-title',dd)
+            .attr('data-original-title',date)
             .tooltip()
             .addClass('m-1')
-            .text(task)
+            .text(name)
             .click(function () {
                 $(this).parent().toggleClass('done').toggleClass('list-group-item-success')
                 if($(this).css('text-decoration-line') == 'line-through')
                     $(this).css('text-decoration-line','')
                 else
                     $(this).css('text-decoration-line','line-through')
+                if(done){
+                    $(this).click()
+                }
+                upadateLocalStorage()
             })
         )
         .append(
@@ -52,6 +60,7 @@ $(()=>{
             .click(function () {
                 $(this).parent().hide('slow',function (){
                     $(this).remove()
+                    upadateLocalStorage()
                 })
             })
         )
@@ -64,6 +73,7 @@ $(()=>{
             )
             .click(function () {
                 $(this).parent().insertBefore($(this).parent().prev())
+                upadateLocalStorage()
             })
         )
         .append(
@@ -73,9 +83,10 @@ $(()=>{
                 $('<i>')
                 .addClass('fa fa-arrow-down')
             )
-            .click((e) => $(e.currentTarget).parent().insertAfter(
-                $(e.currentTarget).parent().next()
-            ))
+            .click(function () {
+                $(this).parent.insertAfter($(this).parent().next())
+                upadateLocalStorage()
+            })
         )
         .append(
             $('<button>')
@@ -98,12 +109,36 @@ $(()=>{
             $(this).show('slow')
         })
         todolist.append(item)
+        upadateLocalStorage()
+    }
+    fetchTodos = function () {
+        if(window.localStorage.getItem('todos')){
+            let todos = window.localStorage.getItem('todos')
+            todos = JSON.parse(todos)
+            for(let i =0;i<todos.length;i++){
+                addItem(todos[i].name,todos[i].date,todos[i].done)
+            }
+        }
+    }
+    fetchTodos()
+    addtask.click(() => {
+        let dd = duedate.val()
+        duedate.val('')
+        if(dd == '')
+            dd == new Date()
+        let task = newtask.val()
+        task.trim()
+        if(task == '')
+            return
+        newtask.val('')
+        addItem(task,dd,false)
     })
     $('#savebtn').click(function () {
         if(newname.val() == '' ||  newduedate.val() =='')
             return
         $(current.children()[0]).text(newname.val()).attr('data-original-title',newduedate.val())
         editmodal.modal('toggle')
+        upadateLocalStorage()
     })
     newtask.keypress(function (e) {
         if(e.which == 13)
@@ -128,8 +163,8 @@ $(()=>{
                 todolist.append($(items[i]))
             }
         })
-        // console.log(todolist)
         todolist.show('fast')
+        upadateLocalStorage()
     })
     removetask.click(function () {
         $('.done').each(function () {
