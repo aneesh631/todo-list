@@ -44,9 +44,6 @@ $(()=>{
                     $(this).css('text-decoration-line','')
                 else
                     $(this).css('text-decoration-line','line-through')
-                if(done){
-                    $(this).click()
-                }
                 upadateLocalStorage()
             })
         )
@@ -84,7 +81,7 @@ $(()=>{
                 .addClass('fa fa-arrow-down')
             )
             .click(function () {
-                $(this).parent.insertAfter($(this).parent().next())
+                $(this).parent().insertAfter($(this).parent().next())
                 upadateLocalStorage()
             })
         )
@@ -108,6 +105,9 @@ $(()=>{
         .hide(10,function () {
             $(this).show('slow')
         })
+        if(done){
+            $(item).children()[0].click()
+        }
         todolist.append(item)
         upadateLocalStorage()
     }
@@ -162,9 +162,9 @@ $(()=>{
                 console.log($(items[i]).children()[0],i)
                 todolist.append($(items[i]))
             }
+            todolist.show('fast',upadateLocalStorage())
         })
-        todolist.show('fast')
-        upadateLocalStorage()
+        
     })
     removetask.click(function () {
         $('.done').each(function () {
